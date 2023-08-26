@@ -15,6 +15,12 @@
 
 <img src="https://i.imgur.com/8LQM3R7.jpg" width="66%" />
 
+## 3. eink_clock_with_temp.yaml
+
+除了日期與時間外，再加上讀取來自HA的某個溫度與濕度實體
+
+<img src="https://i.imgur.com/G7seg0c.jpg" width="66%" />
+
 ## Installation 安裝方式
 
 1. 將`/fonts`資料夾內的檔案放到HA/config/esphome的資料夾內
