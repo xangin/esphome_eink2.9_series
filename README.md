@@ -22,6 +22,13 @@
 
 <img src="https://i.imgur.com/G7seg0c.jpg" width="66%" />
 
+## Hardware 硬體架構
+
+- [微雪 2.9吋黑白墨水屏裸屏](https://detail.tmall.com/item.htm?id=605757420567) - 不帶外殼
+- [墨水屏驅動板 ESP8266](https://oshwhub.com/lingdy2012/mo-shui-ping-_esp8266-qu-dong-ban-_0603_wos_v0-1) - 閑魚有售
+- [电子墨水屏外壳(EW029F2(2.9寸单电池))](https://detail.tmall.com/item.htm?id=601700008521)- 外殼
+
+
 ## Installation 安裝方式
 
 1. 將`/fonts`資料夾內的檔案放到HA/config/esphome的資料夾內
