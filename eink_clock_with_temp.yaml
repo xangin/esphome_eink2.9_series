@@ -1,0 +1,136 @@
+esphome:
+  name: eink-clock-temp
+
+substitutions:
+  device_name: eink-clock-temp
+
+esp8266:
+  board: d1_mini
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+  password: !secret my_ap_password
+
+wifi:
+  ssid: !secret my_ap_ssid
+  password: !secret my_ap_password
+  
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "eink-clock-temp"
+    password: "12345678"
+
+time:
+  - platform: homeassistant
+    id: ha_time
+
+binary_sensor:
+  - platform: status
+    name: "${device_name} Status"
+    id: system_status
+
+sensor:
+  - platform: wifi_signal
+    id: wifisignal
+    name: "${device_name} WiFi Signal"
+    update_interval: 60s
+
+  - platform: homeassistant
+    entity_id: sensor.kids_room_temperature #replace with your temperature entity_id
+    id: temp_data
+
+  - platform: homeassistant
+    entity_id: sensor.kids_room_humidity #replace with your humidity entity_id
+    id: hum_data 
+      
+
+font:
+  - file: "fonts/GothamRnd-Book.ttf"
+    id: time_font
+    size: 80
+    glyphs: [0, 1, 2, 3, 4, 5, 6, 7 ,8, 9, ':']
+
+  - file: "fonts/GothamRnd-Bold.ttf"
+    id: temp_font
+    size: 30
+    glyphs: &font-glyphs    
+      ['!', ',', '.', '"', '%', '-', '_', ':', '°', '/',
+       '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' ',
+       'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
+       'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 
+       'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g',
+       'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
+       's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
+  - file: "fonts/GothamRnd-Book.ttf"
+    id: book_40
+    size: 40
+    glyphs: *font-glyphs 
+
+  - file: "fonts/GothamRnd-Bold.ttf"
+    id: bold_40
+    size: 40
+    glyphs: *font-glyphs 
+
+  - file: "fonts/GothamRnd-Bold.ttf"
+    id: bold_25
+    size: 25
+    glyphs: *font-glyphs 
+
+  - file: "fonts/GothamRnd-Book.ttf"
+    id: date_font
+    size: 30
+    glyphs: *font-glyphs   
+
+  - file: "fonts/materialdesignicons-7296.ttf"
+    id: icon_font
+    size: 30
+    glyphs: 
+      - "\U000F058E" # mdi-water-percent
+      - "\U000F050F" # mdi-thermometer
+
+
+spi:
+  clk_pin: D5
+  mosi_pin: D7
+
+display:
+  - platform: waveshare_epaper
+    id: my_display
+    cs_pin: D8
+    dc_pin: D2
+    busy_pin: D1  
+    reset_pin: D4
+    model: 2.90in
+    rotation: 270
+    update_interval: 10s
+    full_update_every: 60
+    lambda: |-    
+      //time
+      it.strftime(75,1, id(time_font), TextAlign::TOP_CENTER, "%H",id(ha_time).now());
+      
+      it.printf(150,-6, id(time_font), TextAlign::TOP_CENTER, ":");
+      
+      it.strftime(225,1, id(time_font), TextAlign::TOP_CENTER, "%M",id(ha_time).now());
+      
+      it.strftime(150, 70, id(date_font), TextAlign::TOP_CENTER, "%Y/%m/%d %a", id(ha_time).now()); 
+    
+      //temp
+      it.print(25, 97, id(icon_font),TextAlign::TOP_CENTER, "\U000F050F");
+      if(id(temp_data).has_state()){
+        it.printf(90,100, id(temp_font), TextAlign::TOP_CENTER, "%.1f°C", id(temp_data).state);
+      }
+      //hum
+      it.print(185, 100, id(icon_font),TextAlign::TOP_CENTER, "\U000F058E");
+
+      if(id(hum_data).has_state()){
+        it.printf(240, 100, id(temp_font), TextAlign::TOP_CENTER, "%.1f%%", id(hum_data).state);
+      }
+  
+        
+        
