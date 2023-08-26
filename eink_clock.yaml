@@ -1,0 +1,122 @@
+substitutions:
+  device_name: eink-clock
+  
+esphome:
+  name: eink-clock
+
+esp8266:
+  board: d1_mini
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+wifi:
+  ssid: !secret my_ap_ssid
+  password: !secret my_ap_password
+      
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "eink-clock"
+    password: "12345678"
+
+time:
+  - platform: sntp
+    id: sntp_time
+    timezone: Asia/Taipei
+
+sensor:
+  - platform: wifi_signal
+    id: wifisignal
+    update_interval: 60s
+
+font:
+  - file: "fonts/GothamRnd-Bold.ttf"
+    id: time_font
+    size: 95
+    glyphs: [0, 1, 2, 3, 4, 5, 6, 7 ,8, 9, ':']
+
+  - file: "fonts/GothamRnd-Book.ttf"
+    id: time_font_book
+    size: 95
+    glyphs: [0, 1, 2, 3, 4, 5, 6, 7 ,8, 9, ':']
+
+  - file: "fonts/GothamRnd-Bold.ttf"
+    id: weekday_font
+    size: 35
+    glyphs: &font-glyphs    
+      ['!', ',', '.', '"', '%', '-', '_', ':', '°', '/',
+       '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' ',
+       'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
+       'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 
+       'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g',
+       'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
+       's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
+  - file: "fonts/GothamRnd-Book.ttf"
+    id: date_font
+    size: 32
+    glyphs: *font-glyphs   
+
+  - file: 'fonts/materialdesignicons-7296.ttf'
+    id: icon_font
+    size: 20
+    glyphs: &mdi-weather-glyphs
+      - "\U000F0783" # mdi-signal-off
+      - "\U000F08BF" # mdi-signal-cellular-outline bad
+      - "\U000F08BC" # mdi-signal-cellular-1
+      - "\U000F08BD" # mdi-signal-cellular-2
+      - "\U000F08BE" # mdi-signal-cellular-3 good    
+
+spi:
+  clk_pin: D5
+  mosi_pin: D7
+
+display:
+  - platform: waveshare_epaper
+    cs_pin: D8
+    dc_pin: D2
+    busy_pin: D1  
+    reset_pin: D4
+    model: 2.90in
+    rotation: 270
+    update_interval: 10s
+    full_update_every: 600
+    lambda: |-
+
+      //wifi signal
+      if (id(wifisignal).state >= -60) {
+          //Excellent
+          it.print(0, 0, id(icon_font), "\U000F08BE");
+      } else if (id(wifisignal).state  >= -70) {
+          //Good
+          it.print(0, 0, id(icon_font), "\U000F08BD");
+      } else if (id(wifisignal).state  >= -75) {
+          //Fair
+          it.print(0, 0, id(icon_font),"\U000F08BC");
+      } else if (id(wifisignal).state  >= -85) {
+          //Weak
+          it.print(0, 0, id(icon_font),"\U000F08BF");
+      } else {
+          //Unlikely working signal
+          it.print(0, 0, id(icon_font),"\U000F0783");
+      }
+      //Time: hour
+      it.strftime(75,1, id(time_font_book), TextAlign::TOP_CENTER, "%H",id(sntp_time).now());
+      
+      //Time: ":"
+      it.printf(150,-8, id(time_font_book), TextAlign::TOP_CENTER, ":");
+      
+      //Time: minutes
+      it.strftime(225,1, id(time_font_book), TextAlign::TOP_CENTER, "%M",id(sntp_time).now());
+      
+      //Time: date
+      it.strftime(104,93, id(date_font), TextAlign::TOP_CENTER, "%Y/%m/%d",id(sntp_time).now());
+      
+      //Weekday
+      it.strftime(250,90, id(weekday_font), TextAlign::TOP_CENTER, "%a",id(sntp_time).now());
+      
