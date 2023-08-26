@@ -1,21 +1,22 @@
 # ESPhome E-ink 2.9" series sample
 
-# 範例參考圖片:
+# 範例參考:
 
-## 1. eink_clock.yaml
+## 範例1. eink_clock.yaml
 
 單純時鐘僅顯示日期與時間
 
 <img src="https://i.imgur.com/N9xaPfd.jpg" width="66%" />
 
 
-## 2. eink_clock_with_forecast.yaml
+## 範例2. eink_clock_with_forecast.yaml
 
 除了日期與時間外，再加上讀取來自HA的天氣預報圖示與氣溫
 
 <img src="https://i.imgur.com/8LQM3R7.jpg" width="66%" />
 
-## 3. eink_clock_with_temp.yaml
+
+## 範例3. eink_clock_with_temp.yaml
 
 除了日期與時間外，再加上讀取來自HA的某個溫度與濕度實體
 
