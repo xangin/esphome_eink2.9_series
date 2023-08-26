@@ -26,7 +26,7 @@
 
 - [微雪 2.9吋黑白墨水屏裸屏](https://detail.tmall.com/item.htm?id=605757420567) - 不帶外殼
 - [墨水屏驅動板 ESP8266](https://oshwhub.com/lingdy2012/mo-shui-ping-_esp8266-qu-dong-ban-_0603_wos_v0-1) - 閑魚有售
-- [电子墨水屏外壳(EW029F2(2.9寸单电池))](https://detail.tmall.com/item.htm?id=601700008521)- 外殼
+- [电子墨水屏外壳(EW029F2(2.9寸单电池))](https://item.taobao.com/item.htm?id=601700008521)- 外殼
 
 
 ## Installation 安裝方式
