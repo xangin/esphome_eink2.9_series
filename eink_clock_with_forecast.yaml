@@ -1,0 +1,158 @@
+substitutions:
+  device_name: eink-clock-forecast
+  
+esphome:
+  name: eink-clock-forecast
+
+esp8266:
+  board: d1_mini
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+  password: !secret my_ap_password
+
+wifi:
+  ssid: !secret my_ap_ssid
+  password: !secret my_ap_password
+  
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "eink-clock-forecast"
+    password: "12345678"
+
+time:
+  - platform: homeassistant
+    id: ha_time
+
+text_sensor:
+  #weather icon
+  - platform: homeassistant
+    entity_id: sensor.openweathermap_condition
+    id: today_weather
+    
+  #weather temperature 
+  - platform: homeassistant
+    entity_id: sensor.openweathermap_temperature
+    id: today_temperature  
+
+
+binary_sensor:  
+  - platform: status
+    name: "${device_name} WiFi Status"  
+
+font:
+  - file: "fonts/TT0246M.ttf"
+    id: time_font
+    size: 72
+    glyphs: [0, 1, 2, 3, 4, 5, 6, 7 ,8, 9, ':']
+
+  - file: "fonts/GothamRnd-Book.ttf"
+    id: date_font
+    size: 25
+    glyphs: &font-glyphs    
+      ['!', ',', '.', '"', '%', '-', '_', ':', '°', '/',
+       '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' ',
+       'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
+       'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 
+       'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g',
+       'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
+       's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
+  - file: "fonts/GothamRnd-Bold.ttf"
+    id: weekday_font
+    size: 25
+    glyphs: *font-glyphs 
+
+  - file: "fonts/GothamRnd-Bold.ttf"
+    id: temp_font
+    size: 30
+    glyphs: *font-glyphs   
+
+  - file: 'fonts/materialdesignicons-7296.ttf'
+    id: icon_weather
+    size: 80
+    glyphs: &mdi-weather-glyphs
+      - "\U000F0590" # mdi-weather-cloudy
+      - "\U000F0F2F" # mdi-weather-cloudy-alert
+      - "\U000F0E6E" # mdi-weather-cloudy-arrow-right
+      - "\U000F0593" # mdi-weather-lightning
+      - "\U000F067E" # mdi-weather-lightning-rainy
+      - "\U000F0594" # mdi-weather-night
+      - "\U000F0F31" # mdi-weather-night-partly-cloudy      
+      - "\U000F0595" # mdi-weather-partly-cloudy
+      - "\U000F0F32" # mdi-weather-partly-lightning
+      - "\U000F0F33" # mdi-weather-partly-rainy
+      - "\U000F0596" # mdi-weather-pouring
+      - "\U000F0597" # mdi-weather-rainy
+      - "\U000F0599" # mdi-weather-sunny
+      - "\U000F0F37" # mdi-weather-sunny-alert
+      - "\U000F14E4" # mdi-weather-sunny-off
+      - "\U000F059A" # mdi-weather-sunset
+      - "\U000F059B" # mdi-weather-sunset-down
+      - "\U000F059C" # mdi-weather-sunset-up
+      - "\U000F059D" # mdi-weather-windy
+      - "\U000F059E" # mdi-weather-windy-variant
+
+spi:
+  clk_pin: D5
+  mosi_pin: D7
+
+display:
+  - platform: waveshare_epaper
+    cs_pin: D8
+    dc_pin: D2
+    busy_pin: D1  
+    reset_pin: D4
+    model: 2.90in
+    rotation: 270
+    update_interval: 10s
+    id: my_display
+    full_update_every: 30
+    lambda: |-
+      // Map weather states to MDI characters.
+      std::map<std::string, std::string> weather_icon_map
+        {
+          {"cloudy", "\U000F0590"},
+          {"cloudy-alert", "\U000F0F2F"},
+          {"fog", "\U000F0591"},
+          {"hail", "\U000F0592"},
+          {"hazy", "\U000F0F30"},
+          {"lightning", "\U000F0593"},
+          {"lightning-rainy", "\U000F067E"},
+          {"clear-night", "\U000F0594"},
+          {"night-partly-cloudy", "\U000F0F31"},          
+          {"partlycloudy", "\U000F0595"},
+          {"partly-lightning", "\U000F0F32"},
+          {"partly-rainy", "\U000F0F33"},
+          {"pouring", "\U000F0596"},
+          {"rainy", "\U000F0597"},
+          {"sunny", "\U000F0599"},
+          {"sunny-alert", "\U000F0F37"},
+          {"sunny-off", "\U000F14E4"},
+          {"sunset", "\U000F059A"},
+          {"sunset-down", "\U000F059B"},
+          {"sunset-up", "\U000F059C"},
+          {"windy", "\U000F059D"},
+          {"windy-variant", "\U000F059E"},
+        };   
+
+      //time
+      it.strftime(110, -10, id(time_font), TextAlign::TOP_CENTER, "%H:%M", id(ha_time).now());     
+
+      //date
+      it.strftime(110, 75, id(weekday_font), TextAlign::TOP_CENTER, "%Y/%m/%d", id(ha_time).now()); 
+
+      //weekday
+      it.strftime(110, 100, id(weekday_font), TextAlign::TOP_CENTER, "%A", id(ha_time).now());
+      
+      //weather icon
+      it.printf(255, 10, id(icon_weather), TextAlign::TOP_CENTER, "%s", weather_icon_map[id(today_weather).state.c_str()].c_str());
+
+      //temp
+      it.printf(255, 95, id(temp_font), TextAlign::TOP_CENTER, "%s°C", id(today_temperature).state.c_str());
+      
