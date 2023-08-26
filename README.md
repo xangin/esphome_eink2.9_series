@@ -6,13 +6,13 @@
 
 單純時鐘僅顯示日期與時間
 
-<img src="https://i.imgur.com/3Hk3BAW.jpg" width="66%" />
+<img src="https://i.imgur.com/N9xaPfd.jpg" width="66%" />
 
 ## 2. eink_clock_with_forecast.yaml
 
 除了日期與時間外，再加上讀取來自HA的天氣預報圖示與氣溫
 
-<img src="https://i.imgur.com/3Hk3BAW.jpg" width="66%" />
+<img src="https://i.imgur.com/8LQM3R7.jpg" width="66%" />
 
 ## Installation 安裝方式
 
