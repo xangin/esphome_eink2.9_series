@@ -87,7 +87,7 @@ font:
     size: 30
     glyphs: *font-glyphs   
 
-  - file: "fonts/materialdesignicons-7296.ttf"
+  - file: "fonts/materialdesignicons.ttf"
     id: icon_font
     size: 30
     glyphs: 
