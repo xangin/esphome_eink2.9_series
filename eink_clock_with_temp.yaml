@@ -1,8 +1,10 @@
-esphome:
-  name: eink-clock-temp
-
 substitutions:
   device_name: eink-clock-temp
+  temperature_entity_id: sensor.kids_room_temperature #replace with your temperature entity_id
+  humidity_entity_id: sensor.kids_room_humidity #replace with your humidity entity_id
+
+esphome:
+  name: eink-clock-temp
 
 esp8266:
   board: d1_mini
@@ -41,11 +43,11 @@ sensor:
     update_interval: 60s
 
   - platform: homeassistant
-    entity_id: sensor.kids_room_temperature #replace with your temperature entity_id
+    entity_id: ${temperature_entity_id}
     id: temp_data
 
   - platform: homeassistant
-    entity_id: sensor.kids_room_humidity #replace with your humidity entity_id
+    entity_id: ${humidity_entity_id}
     id: hum_data 
       
 
