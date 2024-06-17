@@ -1,5 +1,22 @@
 # ESPhome E-ink 2.9" series sample
 
+<a href="https://www.buymeacoffee.com/xangin" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="30" width="130"></a>
+
+本專案為利用2.9"電子紙搭配ESPhome與Home Assistant，可自由調整喜歡的版面
+
+或是加上更多頁面並透過HA控制換頁，例如當衣服洗好時，會自動將畫面切為訊息提示
+
+要有多少頁或是顯示什麼都能自由設計
+
+- 成品尺寸: 寬 88mm x 高 47mm
+
+<img src="https://i.imgur.com/ce0TzbS.jpg" width="50%" />
+
+- 成品背面
+
+<img src="https://i.imgur.com/h4HkUgz.jpg" width="50%" />
+
+
 # 範例參考:
 
 ## 範例1. eink_clock.yaml
