@@ -35,6 +35,23 @@ sensor:
     id: wifisignal
     update_interval: 60s
 
+button:
+  - platform: template
+    name: "Show Time Page"
+    icon: 'mdi:clock'
+    on_press:
+      then:
+        - display.page.show: p1
+        - component.update: my_display
+    
+  - platform: template
+    name: "Show Message Page"
+    icon: 'mdi:update'
+    on_press:
+      then:
+        - display.page.show: p2
+        - component.update: my_display
+
 font:
   - file: "fonts/GothamRnd-Bold.ttf"
     id: time_font
