@@ -25,6 +25,8 @@ wifi:
     ssid: "d1mini-eink-clock"
     password: "12345678"
 
+captive_portal:
+
 time:
   - platform: sntp
     id: sntp_time
@@ -109,6 +111,7 @@ display:
     rotation: 270
     update_interval: 10s
     full_update_every: 60
+    id: my_display
     pages:
       - id: p1
         lambda: |-
