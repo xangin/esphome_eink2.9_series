@@ -25,6 +25,8 @@ wifi:
     ssid: "eink-clock-forecast"
     password: "12345678"
 
+captive_portal:
+
 time:
   - platform: homeassistant
     id: ha_time
