@@ -2,7 +2,7 @@
 
 <a href="https://www.buymeacoffee.com/xangin" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="30" width="130"></a>
 
-正體中文 | [English](https://github.com/xangin/esphome_eink2.9_series/blob/main/README_en.md)
+[正體中文](https://github.com/xangin/esphome_eink2.9_series/blob/main/README.md) | English
 
 This project uses a 2.9" e-ink display with ESPhome and Home Assistant, allowing for customizable layouts.
 
