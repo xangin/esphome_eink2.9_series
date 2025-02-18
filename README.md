@@ -2,6 +2,8 @@
 
 <a href="https://www.buymeacoffee.com/xangin" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="30" width="130"></a>
 
+正體中文 | [English](https://github.com/xangin/esphome_eink2.9_series/blob/main/README_en.md)
+
 本專案為利用2.9"電子紙搭配ESPhome與Home Assistant，可自由調整喜歡的版面
 
 或是加上更多頁面並透過HA控制換頁，例如當衣服洗好時，會自動將畫面切為訊息提示
