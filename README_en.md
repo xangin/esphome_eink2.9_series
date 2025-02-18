@@ -47,7 +47,7 @@ In addition to the date and time, it also includes a message page.
 
 <img src="https://user-images.githubusercontent.com/56766371/280905123-8fde26c9-1ff2-4ab5-92ce-a17f62dd761a.jpg" width="66%" />
 
-## Hardware 硬體架構
+## Hardware
 
 - [Waveshare 2.9 inch Black and White E-ink Screen](https://detail.tmall.com/item.htm?id=605757420567) - Without casing
 - [E-ink Screen Driver Board ESP8266](https://oshwhub.com/lingdy2012/mo-shui-ping-_esp8266-qu-dong-ban-_0603_wos_v0-1) - Available on Xianyu
